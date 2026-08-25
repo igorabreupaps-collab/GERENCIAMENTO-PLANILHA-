@@ -36,7 +36,8 @@
 
   <nav class="sidebar" aria-label="Navegação do painel">
     <div class="brand-block">
-      <img class="sidebar-logo" src="logo-full.png" alt="Hiveflow" width="120" height="118">
+      <img class="sidebar-logo sidebar-logo-light" src="logo-full.png" alt="Hiveflow" width="120" height="118">
+      <img class="sidebar-logo sidebar-logo-dark" src="logo-sidebar.png" alt="Hiveflow" width="120" height="118">
     </div>
     <ul class="nav-menu" role="tablist" aria-orientation="vertical">
       <li><button class="nav-item active" role="tab" aria-selected="true" data-panel="overview">
@@ -50,9 +51,6 @@
       </button></li>
       <li><button class="nav-item" role="tab" aria-selected="false" data-panel="naoconformidades">
         <span class="nav-icon" id="icon-alert-octagon"></span><span class="nav-label">Pendências de Execução</span><span class="nav-badge" id="nav-badge-nc">0</span>
-      </button></li>
-      <li><button class="nav-item" role="tab" aria-selected="false" data-panel="documentacao">
-        <span class="nav-icon" id="icon-file-text"></span><span class="nav-label">Documentação</span>
       </button></li>
       <li><button class="nav-item" role="tab" aria-selected="false" data-panel="editor">
         <span class="nav-icon" id="icon-pencil"></span><span class="nav-label">Editor</span>
@@ -150,28 +148,34 @@
       </div>
     </section>
 
-    <section class="panel" id="panel-documentacao" role="tabpanel">
-      <div class="panel-head">
-        <h1 class="title">Documentação técnica emitida</h1>
-        <p class="subtitle">Volume de documentos emitidos por tipo, desde o início do contrato.</p>
-      </div>
-      <div class="panel-body doc-panel-body">
-        <div id="doc-chart-slot"></div>
-        <p class="table-note" id="doc-footer-note"></p>
-      </div>
-    </section>
-
     <section class="panel" id="panel-editor" role="tabpanel">
-      <div class="panel-head">
-        <h1 class="title">Editor</h1>
-        <p class="subtitle">Edições aqui gravam direto no banco e aparecem para todo mundo automaticamente.</p>
+      <div class="panel-head editor-head-row">
+        <div>
+          <h1 class="title">Editor</h1>
+          <p class="subtitle">Edições aqui gravam direto no banco e aparecem para todo mundo automaticamente.</p>
+        </div>
+        <div class="editor-import-bar">
+          <label class="editor-add-btn" for="editor-import-file" id="editor-import-btn"><span class="btn-icon" id="icon-import"></span>Importar planilha (.xlsx)</label>
+          <input type="file" id="editor-import-file" accept=".xlsx,.xlsm" hidden>
+        </div>
       </div>
-      <div class="panel-body">
-        <div class="editor-body">
-          <div class="readonly-banner" id="editor-readonly-banner" hidden>
-            Você está como Visualizador — pode ver todos os dados, mas não editar. Peça a um Administrador para mudar seu perfil se precisar editar.
-          </div>
+      <div class="editor-status" id="editor-import-status"></div>
+      <div class="readonly-banner" id="editor-readonly-banner" hidden>
+        Você está como Visualizador — pode ver todos os dados, mas não editar. Peça a um Administrador para mudar seu perfil se precisar editar.
+      </div>
 
+      <div class="editor-tabs" role="tablist" aria-label="Abas do editor">
+        <button class="editor-tab active" role="tab" aria-selected="true" data-editor-tab="areas" type="button">Áreas</button>
+        <button class="editor-tab" role="tab" aria-selected="false" data-editor-tab="nc" type="button">Não Conformidades</button>
+        <button class="editor-tab" role="tab" aria-selected="false" data-editor-tab="doc-de" type="button">Desenhos</button>
+        <button class="editor-tab" role="tab" aria-selected="false" data-editor-tab="doc-md" type="button">MDs</button>
+        <button class="editor-tab" role="tab" aria-selected="false" data-editor-tab="doc-lm" type="button">LMs</button>
+        <button class="editor-tab" role="tab" aria-selected="false" data-editor-tab="doc-mc" type="button">MCs</button>
+        <button class="editor-tab" role="tab" aria-selected="false" data-editor-tab="doc-ri" type="button">RIs</button>
+      </div>
+
+      <div class="panel-body">
+        <div class="editor-tab-panel active" id="editor-tab-areas" role="tabpanel">
           <div class="card">
             <div class="editor-section-head">
               <h3>Áreas (Controle)</h3>
@@ -188,7 +192,9 @@
               </table>
             </div>
           </div>
+        </div>
 
+        <div class="editor-tab-panel" id="editor-tab-nc" role="tabpanel">
           <div class="card">
             <div class="editor-section-head">
               <h3>Não Conformidades</h3>
@@ -205,7 +211,9 @@
               </table>
             </div>
           </div>
+        </div>
 
+        <div class="editor-tab-panel" id="editor-tab-doc-de" role="tabpanel">
           <div class="card">
             <div class="editor-section-head">
               <h3>Desenhos (DE)</h3>
@@ -222,7 +230,9 @@
               </table>
             </div>
           </div>
+        </div>
 
+        <div class="editor-tab-panel" id="editor-tab-doc-md" role="tabpanel">
           <div class="card">
             <div class="editor-section-head">
               <h3>Memoriais Descritivos (MD)</h3>
@@ -239,7 +249,9 @@
               </table>
             </div>
           </div>
+        </div>
 
+        <div class="editor-tab-panel" id="editor-tab-doc-lm" role="tabpanel">
           <div class="card">
             <div class="editor-section-head">
               <h3>Listas de Materiais (LM)</h3>
@@ -256,7 +268,9 @@
               </table>
             </div>
           </div>
+        </div>
 
+        <div class="editor-tab-panel" id="editor-tab-doc-mc" role="tabpanel">
           <div class="card">
             <div class="editor-section-head">
               <h3>Análises de Risco (MC)</h3>
@@ -273,7 +287,9 @@
               </table>
             </div>
           </div>
+        </div>
 
+        <div class="editor-tab-panel" id="editor-tab-doc-ri" role="tabpanel">
           <div class="card">
             <div class="editor-section-head">
               <h3>Relatórios de Inspeção (RI)</h3>
@@ -336,6 +352,7 @@
   <span id="toast-text"></span>
 </div>
 
+<script src="vendor/xlsx.core.min.js"></script>
 <script src="config.js"></script>
 <script src="renderer.js"></script>
 <script src="app.js"></script>

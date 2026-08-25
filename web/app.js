@@ -9,7 +9,6 @@
     userEmail: null,
     areas: [],
     nc: [],
-    docCountRows: [],
     documentos: [],
     contratoInfo: null,
     D: null,
@@ -67,9 +66,10 @@
   // -----------------------------------------------------------------
   var ICON_MAP = {
     "icon-grid": "grid", "icon-alert-triangle": "alert_triangle", "icon-clipboard-list": "clipboard_list",
-    "icon-alert-octagon": "alert_octagon", "icon-file-text": "file_text", "icon-pencil": "edit_pencil",
+    "icon-alert-octagon": "alert_octagon", "icon-pencil": "edit_pencil",
     "icon-users": "users", "icon-alert-1": "alert_triangle", "icon-plus-1": "plus", "icon-plus-2": "plus",
-    "icon-plus-3": "plus", "icon-plus-4": "plus", "icon-plus-5": "plus", "icon-plus-6": "plus", "icon-plus-7": "plus"
+    "icon-plus-3": "plus", "icon-plus-4": "plus", "icon-plus-5": "plus", "icon-plus-6": "plus", "icon-plus-7": "plus",
+    "icon-import": "upload"
   };
 
   function fillStaticIcons() {
@@ -100,6 +100,15 @@
     if (panel) panel.classList.add("active");
   }
 
+  function activateEditorTab(name) {
+    document.querySelectorAll(".editor-tab[data-editor-tab]").forEach(function (b) { b.classList.remove("active"); b.setAttribute("aria-selected", "false"); });
+    document.querySelectorAll(".editor-tab-panel").forEach(function (p) { p.classList.remove("active"); });
+    var tabBtn = document.querySelector('.editor-tab[data-editor-tab="' + name + '"]');
+    if (tabBtn) { tabBtn.classList.add("active"); tabBtn.setAttribute("aria-selected", "true"); }
+    var panel = document.getElementById("editor-tab-" + name);
+    if (panel) panel.classList.add("active");
+  }
+
   var tooltip, ttValue, ttLabel;
   function showTip(e, g) {
     ttValue.textContent = g.getAttribute("data-value");
@@ -121,6 +130,8 @@
     document.addEventListener("click", function (e) {
       var panelBtn = e.target.closest("[data-panel]");
       if (panelBtn) { activatePanel(panelBtn.getAttribute("data-panel")); return; }
+      var editorTabBtn = e.target.closest("[data-editor-tab]");
+      if (editorTabBtn) { activateEditorTab(editorTabBtn.getAttribute("data-editor-tab")); return; }
       var toggleBtn = e.target.closest(".toggle-btn[data-target]");
       if (toggleBtn) {
         var wrap = document.getElementById(toggleBtn.getAttribute("data-target"));
@@ -149,16 +160,14 @@
     return Promise.all([
       api.get("/api/areas"),
       api.get("/api/nao-conformidades"),
-      api.get("/api/documentacao-tipos"),
       api.get("/api/documentos"),
       api.get("/api/contrato-info")
     ]).then(function (results) {
       state.areas = results[0] || [];
       state.nc = results[1] || [];
-      state.docCountRows = results[2] || [];
-      state.documentos = results[3] || [];
-      state.contratoInfo = results[4] || null;
-      state.D = computeAggregates(state.areas, state.nc, state.docCountRows, state.documentos, state.contratoInfo);
+      state.documentos = results[2] || [];
+      state.contratoInfo = results[3] || null;
+      state.D = computeAggregates(state.areas, state.nc, state.documentos, state.contratoInfo);
       return state.D;
     });
   }
@@ -253,6 +262,273 @@
     });
   }
 
+  // -----------------------------------------------------------------
+  // CRUD: Documentos (Desenhos/MDs/LMs/MCs/RIs, 5 sub-abas de uma
+  // mesma tabela -- ver DOC_TBODY_ID em renderer.js)
+  // -----------------------------------------------------------------
+  var DOC_TIPO_PREFIX = {
+    "Desenhos (DE)": "DE", "Memoriais Descritivos (MD)": "MD", "Listas de Materiais (LM)": "LM",
+    "Análises de Risco (MC)": "MC", "Relatórios de Inspeção (RI)": "RI"
+  };
+
+  function saveDocField(tr, field, raw) {
+    var id = tr.getAttribute("data-id");
+    var value = raw === "" ? null : raw;
+    if (field === "area_id" || field === "revisao") value = raw === "" ? null : parseInt(raw, 10);
+    var patch = {}; patch[field] = value;
+    api.patch("/api/documentos/" + id, patch).then(function () {
+      tr.classList.remove("row-save-flash"); void tr.offsetWidth; tr.classList.add("row-save-flash");
+    }).catch(function (err) {
+      showToast("Erro ao salvar: " + err.message, true);
+    });
+  }
+
+  function addDocumento(tipo) {
+    var numero = "NOVO-" + (DOC_TIPO_PREFIX[tipo] || "DOC") + "-" + Date.now();
+    api.post("/api/documentos", { tipo: tipo, numero: numero }).then(function () {
+      showToast("Documento criado. Edite o número e os campos na tabela.", false);
+      refreshAndRender();
+    }).catch(function (err) {
+      showToast("Erro ao criar documento: " + err.message, true);
+    });
+  }
+
+  function removeDocumento(id) {
+    if (!window.confirm("Remover este documento?")) return;
+    api.del("/api/documentos/" + id).then(function () {
+      refreshAndRender();
+    }).catch(function (err) {
+      showToast("Erro ao remover: " + err.message, true);
+    });
+  }
+
+  // -----------------------------------------------------------------
+  // Importar planilha (.xlsx) direto do Editor -- lê no navegador com
+  // SheetJS (vendor/xlsx.core.min.js) e grava via API, mesma lógica e
+  // mesmas colunas do scripts/import_planilha.py (mantidas em sincronia
+  // manualmente -- ver aquele arquivo se a planilha mudar de estrutura).
+  // -----------------------------------------------------------------
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function isoDate(d) {
+    if (!(d instanceof Date) || isNaN(d)) return null;
+    return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+  }
+  function norm(s) { return (s || "").toString().trim().toLowerCase(); }
+  function cellAt(ws, row, col) {
+    var addr = XLSX.utils.encode_cell({ r: row - 1, c: col - 1 });
+    var cell = ws[addr];
+    return cell ? cell.v : undefined;
+  }
+  function xlsxLastRow(ws, floor) {
+    if (!ws || !ws["!ref"]) return floor;
+    var range = XLSX.utils.decode_range(ws["!ref"]);
+    return Math.max(range.e.r + 1, floor);
+  }
+  function lastRowWithValue(ws, col, floor, ceiling) {
+    ceiling = ceiling || xlsxLastRow(ws, floor);
+    var last = floor - 1;
+    for (var r = floor; r <= ceiling; r++) {
+      if (cellAt(ws, r, col)) last = r;
+    }
+    return Math.max(last, floor - 1);
+  }
+  function cellText(v) {
+    if (v === undefined || v === null) return null;
+    var s = String(v).trim();
+    return s || null;
+  }
+
+  var IMPORT_DOC_SHEETS = {
+    "Desenhos (DE)": { sheet: "Desenhos", dataRow: 5, floorLast: 92, tituloCols: [4, 5, 6], revCol: 8, dataCol: 9, msiCol: 10, jmCol: 11, obsCol: 2 },
+    "Memoriais Descritivos (MD)": { sheet: "MDs", dataRow: 4, floorLast: 87, tituloCols: [4, 5, 6, 7, 8], revCol: 9, dataCol: 10, msiCol: 11, jmCol: 12, obsCol: 2 },
+    "Listas de Materiais (LM)": { sheet: "LMs", dataRow: 4, floorLast: 89, tituloCols: [4, 5, 6, 7, 8], revCol: 9, dataCol: 10, msiCol: 11, jmCol: 12, obsCol: 2 },
+    "Análises de Risco (MC)": { sheet: "MCs", dataRow: 4, floorLast: 98, tituloCols: [4, 5, 6, 7, 8], revCol: 9, dataCol: 10, msiCol: 11, jmCol: 12, obsCol: 2 },
+    "Relatórios de Inspeção (RI)": { sheet: "RIs", dataRow: 4, floorLast: 99, tituloCols: [4, 5, 6, 7, 8], revCol: 9, dataCol: 10, msiCol: 11, jmCol: 12, obsCol: 2 }
+  };
+
+  function parseAreasFromWorkbook(wb) {
+    var ws = wb.Sheets["Controle"];
+    if (!ws) throw new Error('Aba "Controle" não encontrada na planilha.');
+    var dataRow = 4;
+    var lastRow = lastRowWithValue(ws, 5, dataRow, Math.max(200, xlsxLastRow(ws, dataRow)));
+    var areas = [];
+    for (var r = dataRow; r <= lastRow; r++) {
+      var desc = cellAt(ws, r, 5);
+      if (!desc) continue;
+      var adequacao = cellAt(ws, r, 16);
+      var validadeLaudo = cellAt(ws, r, 20);
+      var validadeIs = cellAt(ws, r, 23);
+      areas.push({
+        codigo_ld: cellText(cellAt(ws, r, 2)),
+        descricao: String(desc).trim(),
+        status: cellText(cellAt(ws, r, 26)),
+        adequacao_geral: typeof adequacao === "number" ? adequacao : null,
+        validade_laudo: isoDate(validadeLaudo),
+        validade_is: isoDate(validadeIs),
+        dossie: cellText(cellAt(ws, r, 27)),
+        pendencia: cellText(cellAt(ws, r, 29))
+      });
+    }
+    return areas;
+  }
+
+  function parseNaoConformidadesFromWorkbook(wb) {
+    var ws = wb.Sheets["RIs"];
+    if (!ws) return [];
+    var dataRow = 4;
+    var lastRow = lastRowWithValue(ws, 1, dataRow, Math.max(99, xlsxLastRow(ws, dataRow)));
+    var NC_DESC_COL = 13, NC_SEV_COL = 14, NC_STATUS_COL = 15, NC_RESP_COL = 16, NC_DATE_COL = 17;
+    var rows = [];
+    for (var r = dataRow; r <= lastRow; r++) {
+      var desc = cellAt(ws, r, NC_DESC_COL);
+      if (!desc || !String(desc).trim()) continue;
+      rows.push({
+        area_texto: cellText(cellAt(ws, r, 3)),
+        numero_ri: cellText(cellAt(ws, r, 1)),
+        descricao: String(desc).trim(),
+        severidade: cellAt(ws, r, NC_SEV_COL) || "Não informado",
+        status: cellAt(ws, r, NC_STATUS_COL) || "Não informado",
+        responsavel: cellText(cellAt(ws, r, NC_RESP_COL)),
+        data: isoDate(cellAt(ws, r, NC_DATE_COL))
+      });
+    }
+    return rows;
+  }
+
+  function parseDocumentosFromWorkbook(wb) {
+    var docs = [];
+    Object.keys(IMPORT_DOC_SHEETS).forEach(function (tipo) {
+      var cfg = IMPORT_DOC_SHEETS[tipo];
+      var ws = wb.Sheets[cfg.sheet];
+      if (!ws) return;
+      var lastRow = lastRowWithValue(ws, 1, cfg.dataRow, Math.max(cfg.floorLast, xlsxLastRow(ws, cfg.dataRow)));
+      for (var r = cfg.dataRow; r <= lastRow; r++) {
+        var numero = cellAt(ws, r, 1);
+        if (!numero) continue;
+        var tituloParts = cfg.tituloCols.map(function (c) { return cellAt(ws, r, c); })
+          .filter(function (v) { return v !== undefined && v !== null && String(v).trim(); })
+          .map(function (v) { return String(v).trim(); });
+        var revisao = cellAt(ws, r, cfg.revCol);
+        docs.push({
+          tipo: tipo,
+          numero: String(numero).trim(),
+          area_texto: cellText(cellAt(ws, r, 3)),
+          titulo: tituloParts.length ? tituloParts.join(" — ") : null,
+          revisao: typeof revisao === "number" ? revisao : null,
+          data_emissao: isoDate(cellAt(ws, r, cfg.dataCol)),
+          numero_msi: cellText(cellAt(ws, r, cfg.msiCol)),
+          numero_jmendes: cellText(cellAt(ws, r, cfg.jmCol)),
+          observacao: cellText(cellAt(ws, r, cfg.obsCol))
+        });
+      }
+    });
+    return docs;
+  }
+
+  // Importa em sequência (uma requisição de cada vez) -- mais lento que em
+  // paralelo, mas evita sobrecarregar a API com centenas de requisições
+  // simultâneas e deixa o progresso fácil de acompanhar.
+  function importSequentially(items, label, statusEl, fn) {
+    var chain = Promise.resolve();
+    items.forEach(function (item, i) {
+      chain = chain.then(function () {
+        return fn(item).then(function () {
+          if (i % 10 === 0 || i === items.length - 1) {
+            statusEl.textContent = "Importando " + label + " (" + (i + 1) + "/" + items.length + ")...";
+          }
+        });
+      });
+    });
+    return chain;
+  }
+
+  function runImport(parsed, statusEl) {
+    var areaIdByDesc = {};
+    statusEl.className = "editor-status";
+    return importSequentially(parsed.areas, "áreas", statusEl, function (a) {
+      return api.post("/api/areas", a).then(function (created) {
+        areaIdByDesc[norm(created.descricao)] = created.id;
+      });
+    }).then(function () {
+      return importSequentially(parsed.nc, "não conformidades", statusEl, function (n) {
+        n.area_id = areaIdByDesc[norm(n.area_texto)] || null;
+        return api.post("/api/nao-conformidades", n);
+      });
+    }).then(function () {
+      return importSequentially(parsed.documentos, "documentos", statusEl, function (d) {
+        d.area_id = areaIdByDesc[norm(d.area_texto)] || null;
+        return api.post("/api/documentos", d);
+      });
+    }).then(function () {
+      statusEl.className = "editor-status ok";
+      statusEl.textContent = "Importação concluída: " + parsed.areas.length + " área(s), " +
+        parsed.nc.length + " não conformidade(s), " + parsed.documentos.length + " documento(s).";
+      showToast("Planilha importada com sucesso.", false);
+      refreshAndRender();
+      if (state.role === "admin") loadUsers();
+    }).catch(function (err) {
+      statusEl.className = "editor-status err";
+      statusEl.textContent = "Erro durante a importação: " + err.message + " (parte dos dados pode já ter sido gravada).";
+      showToast("Erro durante a importação: " + err.message, true);
+      refreshAndRender();
+    });
+  }
+
+  function importSpreadsheet(file) {
+    var statusEl = document.getElementById("editor-import-status");
+    statusEl.className = "editor-status";
+    statusEl.textContent = "Lendo " + file.name + "...";
+    var reader = new FileReader();
+    reader.onload = function (ev) {
+      var parsed;
+      try {
+        var data = new Uint8Array(ev.target.result);
+        var wb = XLSX.read(data, { type: "array", cellDates: true });
+        parsed = {
+          areas: parseAreasFromWorkbook(wb),
+          nc: parseNaoConformidadesFromWorkbook(wb),
+          documentos: parseDocumentosFromWorkbook(wb)
+        };
+      } catch (err) {
+        statusEl.className = "editor-status err";
+        statusEl.textContent = "Erro ao ler a planilha: " + err.message;
+        showToast("Erro ao ler a planilha: " + err.message, true);
+        return;
+      }
+
+      var msg = "Importar " + parsed.areas.length + " área(s), " + parsed.nc.length +
+        " não conformidade(s) e " + parsed.documentos.length + " documento(s) para o sistema?";
+      if (state.areas.length > 0) {
+        msg += "\n\nATENÇÃO: já existem " + state.areas.length + " área(s) cadastradas. " +
+          "Isso ADICIONA registros novos, não substitui -- se essa planilha já foi importada antes, vai duplicar dados.";
+      }
+      if (!window.confirm(msg)) { statusEl.textContent = ""; return; }
+
+      statusEl.textContent = "Importando...";
+      runImport(parsed, statusEl);
+    };
+    reader.onerror = function () {
+      statusEl.className = "editor-status err";
+      statusEl.textContent = "Não foi possível ler o arquivo.";
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function setupImportInteractions() {
+    var input = document.getElementById("editor-import-file");
+    if (!input) return;
+    input.addEventListener("change", function (e) {
+      var file = e.target.files[0];
+      e.target.value = "";
+      if (!file) return;
+      if (state.role !== "editor" && state.role !== "admin") {
+        showToast("Só Editor ou Administrador pode importar a planilha.", true);
+        return;
+      }
+      importSpreadsheet(file);
+    });
+  }
+
   function setupEditorInteractions() {
     document.getElementById("editor-add-area").addEventListener("click", function () {
       if (state.role !== "editor" && state.role !== "admin") return;
@@ -281,6 +557,26 @@
     document.getElementById("editor-nc-tbody").addEventListener("click", function (e) {
       var btn = e.target.closest("[data-remove-nc]");
       if (btn) removeNc(btn.getAttribute("data-remove-nc"));
+    });
+
+    document.querySelectorAll("[data-add-doc-tipo]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        if (state.role !== "editor" && state.role !== "admin") return;
+        addDocumento(btn.getAttribute("data-add-doc-tipo"));
+      });
+    });
+    Object.keys(DOC_TBODY_ID).forEach(function (tipo) {
+      var tbody = document.getElementById(DOC_TBODY_ID[tipo]);
+      if (!tbody) return;
+      tbody.addEventListener("change", function (e) {
+        var input = e.target.closest("[data-field]");
+        if (!input) return;
+        saveDocField(input.closest("tr"), input.getAttribute("data-field"), input.value);
+      });
+      tbody.addEventListener("click", function (e) {
+        var btn = e.target.closest("[data-remove-doc]");
+        if (btn) removeDocumento(btn.getAttribute("data-remove-doc"));
+      });
     });
   }
 
@@ -409,6 +705,7 @@
     fillStaticIcons();
     setupChromeInteractions();
     setupEditorInteractions();
+    setupImportInteractions();
     setupUsersInteractions();
     setupAuthInteractions();
     tryResumeSession();

@@ -25,4 +25,31 @@ function buildUpdate(table, allowedFields, body, id, userId) {
   return { sql, values };
 }
 
-module.exports = { buildUpdate };
+// Monta um INSERT parametrizado a partir dos campos permitidos que vieram no
+// body, preenchendo com "defaults" quem não veio (usado tanto pelo botão
+// "Adicionar" da interface -- body quase vazio, cai tudo em default -- quanto
+// por importações em lote, que mandam a linha já preenchida inteira).
+function buildInsert(table, allowedFields, body, defaults, userId) {
+  const cols = [];
+  const placeholders = [];
+  const values = [];
+  let i = 1;
+
+  for (const field of allowedFields) {
+    const provided = Object.prototype.hasOwnProperty.call(body, field) && body[field] !== undefined && body[field] !== "";
+    const hasDefault = Object.prototype.hasOwnProperty.call(defaults, field);
+    if (!provided && !hasDefault) continue;
+    cols.push(field);
+    placeholders.push(`$${i++}`);
+    values.push(provided ? body[field] : defaults[field]);
+  }
+
+  cols.push("updated_by");
+  placeholders.push(`$${i++}`);
+  values.push(userId);
+
+  const sql = `insert into ${table} (${cols.join(", ")}) values (${placeholders.join(", ")}) returning *`;
+  return { sql, values };
+}
+
+module.exports = { buildUpdate, buildInsert };

@@ -3,7 +3,7 @@ const db = require("../db");
 const { authRequired } = require("../middleware/auth");
 const { requireRole } = require("../middleware/requireRole");
 const { asyncHandler } = require("../lib/asyncHandler");
-const { buildUpdate } = require("../lib/updateQuery");
+const { buildUpdate, buildInsert } = require("../lib/updateQuery");
 
 const router = express.Router();
 
@@ -34,15 +34,11 @@ router.post(
   authRequired,
   requireRole("editor", "admin"),
   asyncHandler(async (req, res) => {
-    const tipo = req.body.tipo;
-    const numero = (req.body.numero || "").trim();
-    if (!tipo || !numero) {
+    if (!req.body.tipo || !(req.body.numero || "").trim()) {
       return res.status(400).json({ error: "Informe tipo e número do documento." });
     }
-    const { rows } = await db.query(
-      "insert into documentos (tipo, numero, updated_by) values ($1, $2, $3) returning *",
-      [tipo, numero, req.user.id]
-    );
+    const insert = buildInsert("documentos", ALLOWED_FIELDS, req.body, {}, req.user.id);
+    const { rows } = await db.query(insert.sql, insert.values);
     res.status(201).json(rows[0]);
   })
 );

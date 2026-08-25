@@ -11,7 +11,6 @@ var ICONS = {
   "alert_triangle": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M12 3.5 21 19.5H3z"/><line x1="12" y1="9.5" x2="12" y2="13.5"/><circle cx="12" cy="16.5" r="0.9" fill="currentColor" stroke="none"/></svg>',
   "clipboard_list": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><rect x="6" y="4" width="12" height="17" rx="2"/><rect x="9" y="2.5" width="6" height="3" rx="1"/><line x1="9" y1="10" x2="15" y2="10"/><line x1="9" y1="13.5" x2="15" y2="13.5"/><line x1="9" y1="17" x2="13" y2="17"/></svg>',
   "alert_octagon": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M8 3h8l5 5v8l-5 5H8l-5-5V8z"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.2" r="0.9" fill="currentColor" stroke="none"/></svg>',
-  "file_text": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M7 2.5h7l4 4v14.5a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1z"/><path d="M14 2.5V7h4"/><line x1="8.5" y1="12" x2="15.5" y2="12"/><line x1="8.5" y1="15.5" x2="15.5" y2="15.5"/><line x1="8.5" y1="19" x2="12.5" y2="19"/></svg>',
   "sun": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>',
   "moon": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>',
   "building": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><rect x="4" y="3" width="11" height="18" rx="1"/><rect x="15" y="9" width="5" height="12" rx="1"/><line x1="7" y1="7" x2="7" y2="7.01"/><line x1="11" y1="7" x2="11" y2="7.01"/><line x1="7" y1="11" x2="7" y2="11.01"/><line x1="11" y1="11" x2="11" y2="11.01"/><line x1="7" y1="15" x2="7" y2="15.01"/><line x1="11" y1="15" x2="11" y2="15.01"/></svg>',
@@ -23,7 +22,8 @@ var ICONS = {
   "users": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="8.5" r="2.6"/><path d="M15.5 14.2c2.6 0.4 4.5 2.7 4.5 5.8"/></svg>',
   "edit_pencil": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M4 20l0.9-3.6L15.5 5.8l2.7 2.7L7.6 19.1z"/><path d="M13.7 7.6l2.7 2.7"/><path d="M4 20l3.6-0.9"/></svg>',
   "eye": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M2 12s3.5-7.5 10-7.5S22 12 22 12s-3.5 7.5-10 7.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
-  "eye_off": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M2 12s3.5-7.5 10-7.5c2 0 3.7 0.5 5.1 1.3M22 12s-1.4 3-4.3 5.1M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M6.1 6.1C3.5 7.9 2 12 2 12"/><line x1="3" y1="3" x2="21" y2="21"/></svg>'
+  "eye_off": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M2 12s3.5-7.5 10-7.5c2 0 3.7 0.5 5.1 1.3M22 12s-1.4 3-4.3 5.1M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M6.1 6.1C3.5 7.9 2 12 2 12"/><line x1="3" y1="3" x2="21" y2="21"/></svg>',
+  "upload": '<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M12 15.5V4"/><path d="M7.5 8.5 12 4l4.5 4.5"/><path d="M4.5 15.5v3a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3"/></svg>'
 };
 
 var STATUS_COLOR = {
@@ -71,7 +71,7 @@ var DOC_TBODY_ID = {
   "Relatórios de Inspeção (RI)": "editor-doc-ri-tbody"
 };
 
-function computeAggregates(areasRaw, ncRaw, docCountRows, documentosRaw, contratoInfo) {
+function computeAggregates(areasRaw, ncRaw, documentosRaw, contratoInfo) {
   var today = new Date(); today.setHours(0, 0, 0, 0);
 
   var statusCounts = {};
@@ -131,9 +131,6 @@ function computeAggregates(areasRaw, ncRaw, docCountRows, documentosRaw, contrat
     ncSevCounts[n.severidade] = (ncSevCounts[n.severidade] || 0) + 1;
   });
 
-  var documentacao = {};
-  (docCountRows || []).forEach(function (d) { documentacao[d.tipo] = d.quantidade; });
-
   var documentos = (documentosRaw || []).map(function (d) {
     var area = (d.area_id && areasById[d.area_id]) ? areasById[d.area_id].descricao : (d.area_texto || null);
     return {
@@ -160,7 +157,6 @@ function computeAggregates(areasRaw, ncRaw, docCountRows, documentosRaw, contrat
     areas_total: areasRaw.length,
     status_counts: statusCounts,
     adequacao_media: adequacaoMedia,
-    documentacao: documentacao,
     pendencias_abertas: pendenciasAbertas,
     vencimentos: vencimentos,
     nc_abertas: ncAbertas,
@@ -442,10 +438,6 @@ function renderDashboard(D, role) {
     "Nenhuma pendência de execução registrada até o momento."
   );
 
-  var docItems = Object.keys(D.documentacao || {}).map(function (k) { return [k, D.documentacao[k]]; });
-  var docColors = {}; docItems.forEach(function (it) { docColors[it[0]] = "var(--series-1)"; });
-  document.getElementById("doc-chart-slot").innerHTML = chartCard("Volume por tipo de documento", "chart-doc", docItems, docColors);
-
   document.getElementById("nav-badge-vencimentos").textContent = vencidos.length;
   document.getElementById("nav-badge-pendencias").textContent = pend.length;
   document.getElementById("nav-badge-nc").textContent = ncAbertas;
@@ -487,9 +479,6 @@ function renderDashboard(D, role) {
     ncAlertText.innerHTML = "<strong>" + ncAbertas + " de " + nc.length + " pendência(s) de execução estão em aberto.</strong> Priorize as de severidade crítica.";
   }
 
-  document.getElementById("doc-footer-note").innerHTML = (
-    "Dados ao vivo, direto do banco — qualquer edição feita por um Editor aparece aqui automaticamente. MSI Engenharia e Tecnologia © " + esc(String(D.gerado_em || "").slice(0, 4)) + "."
-  );
   document.getElementById("sidebar-meta").innerHTML = (
     "Contrato " + esc(D.contrato) + "<br>" + esc(D.cliente) + "<br>Última alteração em " + esc(fmtDateBR(D.gerado_em))
   );
@@ -504,6 +493,10 @@ function renderDashboard(D, role) {
   });
 
   document.querySelectorAll("#editor-add-area, #editor-add-nc, [data-add-doc-tipo]").forEach(function (btn) { btn.disabled = !canEdit; });
+  var importFile = document.getElementById("editor-import-file");
+  var importBtn = document.getElementById("editor-import-btn");
+  if (importFile) importFile.disabled = !canEdit;
+  if (importBtn) importBtn.classList.toggle("disabled", !canEdit);
   var readonlyBanner = document.getElementById("editor-readonly-banner");
   if (readonlyBanner) readonlyBanner.hidden = canEdit;
 }

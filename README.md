@@ -15,12 +15,22 @@ deste documento. Nada foi apagado.
 
 - `postgres` — PostgreSQL 16, dados persistidos num volume Docker.
 - `api` — backend Node.js/Express: autenticação (e-mail+senha, JWT próprio),
-  CRUD de Áreas/Não Conformidades, gestão de usuários, e serve o frontend
-  estático (`web/`) na mesma origem — sem CORS.
+  CRUD de Áreas/Não Conformidades/Documentos, gestão de usuários, e serve o
+  frontend estático (`web/`) na mesma origem — sem CORS.
 - `migrate` — serviço que roda uma vez a cada `docker compose up`: aplica as
   migrations SQL e garante que o primeiro usuário Administrador existe.
 - `web/` — frontend (login + 6 painéis + Editor com edição real + painel
   Usuários), HTML/CSS/JS puro, sem build step.
+
+O Editor cobre as mesmas informações das abas da planilha original: Áreas
+(Controle), Não Conformidades (seção de não conformidades da aba RIs), e
+Documentos — uma tabela só, com um campo `tipo`, exibida como 5 sub-abas
+(Desenhos, Memoriais Descritivos, Listas de Materiais, Análises de Risco,
+Relatórios de Inspeção) para espelhar a estrutura da planilha. Os múltiplos
+campos "Título 1..6" inconsistentes entre abas da planilha original foram
+simplificados num único campo "Título" por documento. A contagem exibida no
+painel Documentação é sempre calculada a partir dos documentos cadastrados
+(nunca um número digitado à parte).
 
 Autorização por perfil é decidida inteiramente pela API (middlewares
 Express) — o banco não usa Row Level Security, porque agora só a própria API
