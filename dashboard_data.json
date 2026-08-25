@@ -1,0 +1,1208 @@
+{
+  "gerado_em": "2026-08-25",
+  "contrato": "089/2026",
+  "cliente": "Ferro+ Mineração S.A",
+  "empresa": "MSI Engenharia e Tecnologia",
+  "objeto": "Sistema de Proteção contra Descargas Atmosféricas (SPDA)",
+  "areas_total": 98,
+  "status_counts": {
+    "SPDA Conforme": 88,
+    "Em andamento": 3,
+    "Não informado": 5,
+    "Paralisado/Novo Projeto": 1,
+    "SPDA Não Conforme": 1
+  },
+  "adequacao_media": 0.9835526315789473,
+  "documentacao": {
+    "Desenhos (DE)": 88,
+    "Memoriais Descritivos (MD)": 84,
+    "Listas de Materiais (LM)": 86,
+    "Análises de Risco (MC)": 95,
+    "Relatórios de Inspeção (RI)": 96
+  },
+  "pendencias_abertas": [
+    {
+      "area": "Moagem",
+      "codigo": 2000,
+      "pendencia": "Realizar limpeza na área abaixo dos HRC-800. Resp. J. Mendes"
+    },
+    {
+      "area": "Escritório novo implantação ITM",
+      "codigo": null,
+      "pendencia": "Obra em andamento. Resp. J. Mendes"
+    },
+    {
+      "area": "Prédio Sala de Controle ITM",
+      "codigo": 9015,
+      "pendencia": "Emitir RI com medição realizada Jan. 23. Mesma área da Classificação Resp. MSI"
+    },
+    {
+      "area": "Novo Peneiramento (PM-05)",
+      "codigo": 9008,
+      "pendencia": "Realizar limpeza nos pilares. Resp. J. Mendes Realizar medição de continuidade da malha. Resp. MSI"
+    },
+    {
+      "area": "Caminhão Elétrico",
+      "codigo": null,
+      "pendencia": "Área adequada , projeto instalado. *Área provisória. Verificar permanença da área"
+    }
+  ],
+  "vencimentos": [
+    {
+      "area": "Tenda Pátio das Contratadas",
+      "codigo": 9075,
+      "documento": "Laudo completo (medição)",
+      "data": "2024-07-04",
+      "dias": -782,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêineres da Parada de Segurança",
+      "codigo": 9036,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-01-04",
+      "dias": -598,
+      "situacao": "vencido"
+    },
+    {
+      "area": "DIR (Depósito Intermediário de Resíduos)",
+      "codigo": 9028,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-02-04",
+      "dias": -567,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Container Recepção da Portaria",
+      "codigo": 9012,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-02-04",
+      "dias": -567,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêineres RH",
+      "codigo": 9036,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-02-04",
+      "dias": -567,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner Elétrica ITM",
+      "codigo": 7001,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-02-04",
+      "dias": -567,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner Ferramentaria PCM ITM",
+      "codigo": 7001,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-02-04",
+      "dias": -567,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner PM-05",
+      "codigo": 9008,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-02-04",
+      "dias": -567,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Tanque de Cal Filtragem",
+      "codigo": 4000,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-03-04",
+      "dias": -539,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Container Fiscal Portaria",
+      "codigo": 9012,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-03-04",
+      "dias": -539,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Depósito de Resíduos ITM",
+      "codigo": 7001,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-03-04",
+      "dias": -539,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Escritório Geologia/Geotecnia",
+      "codigo": 9024,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-04-04",
+      "dias": -508,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner Geologia/Geotecnia",
+      "codigo": 9024,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-04-04",
+      "dias": -508,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Smartmine e Operação Mina",
+      "codigo": null,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-04-04",
+      "dias": -508,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Posto de Combustível",
+      "codigo": 9011,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-04-04",
+      "dias": -508,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Escritório Administrativo 2",
+      "codigo": 9036,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-04-05",
+      "dias": -507,
+      "situacao": "vencido"
+    },
+    {
+      "area": "ETE Oficina",
+      "codigo": 9047,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-04-05",
+      "dias": -507,
+      "situacao": "vencido"
+    },
+    {
+      "area": "ETE Principal",
+      "codigo": 9048,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-04-05",
+      "dias": -507,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Canteiro Implantação de Projetos",
+      "codigo": 9046,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-04-05",
+      "dias": -507,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Logística",
+      "codigo": 9036,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-05-04",
+      "dias": -478,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Mirante",
+      "codigo": null,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-05-06",
+      "dias": -476,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Andromeda AURO",
+      "codigo": 9083,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-05-06",
+      "dias": -476,
+      "situacao": "vencido"
+    },
+    {
+      "area": "ETR Josino",
+      "codigo": 9084,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-05-06",
+      "dias": -476,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Poço Artesiano 1",
+      "codigo": null,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-06-04",
+      "dias": -447,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Lavador de Rodas",
+      "codigo": 9013,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-07-04",
+      "dias": -417,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Laboratório",
+      "codigo": 9036,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-08-04",
+      "dias": -386,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Depósito de Produtos Químicos",
+      "codigo": 9036,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-08-04",
+      "dias": -386,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Britagem",
+      "codigo": 1000,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Classificação",
+      "codigo": 2000,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Espirais",
+      "codigo": 2000,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Tanque de Cal Filtragem",
+      "codigo": 4000,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Floculantes",
+      "codigo": 4000,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Espessadores",
+      "codigo": 4000,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Galpão de Ácido Nitrico",
+      "codigo": 4000,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Tanques Agitadores",
+      "codigo": 4000,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Filtragem Cerâmica de Concentrado",
+      "codigo": 5001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Torre de Resfriamento",
+      "codigo": 5001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Casa de Máquinas",
+      "codigo": 5001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Filtragem de Prensa",
+      "codigo": 6006,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Eletrocentro Filtragem Prensa 1",
+      "codigo": 6006,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Eletrocentro Filtragem Prensa 2",
+      "codigo": 6006,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Caixa Australianas 1",
+      "codigo": 7001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Caixa Australianas 2",
+      "codigo": 7001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Caixa Australianas 3",
+      "codigo": 7001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Caixa Australianas 4",
+      "codigo": 7001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Eletrocentro Bombas de Água",
+      "codigo": 7001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Bombas de Água",
+      "codigo": 7001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Portaria Central",
+      "codigo": 9012,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Vestíarios",
+      "codigo": 9036,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Restaurante",
+      "codigo": 9036,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Quiosque Adm",
+      "codigo": 9036,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Logística",
+      "codigo": 9036,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Poço Artesiano 2",
+      "codigo": 9053,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "HP 100",
+      "codigo": 9008,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Container Fiscal Portaria",
+      "codigo": 9012,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêineres da Parada de Segurança",
+      "codigo": 9036,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Escritório Geologia/Geotecnia",
+      "codigo": 9024,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner Geologia/Geotecnia",
+      "codigo": 9024,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Tenda Oficina de Veículos",
+      "codigo": 9025,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Oficina de Equipamentos",
+      "codigo": 9025,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Depósito Facilities",
+      "codigo": 9074,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Fábrica de Placas e Container Meio Ambiente",
+      "codigo": 9074,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Ponto de Ônibus ITM",
+      "codigo": 7001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Planta Piloto",
+      "codigo": 9005,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Poço Artesiano 1",
+      "codigo": null,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Smartmine e Operação Mina",
+      "codigo": null,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Almoxarifado",
+      "codigo": 9010,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Posto de Combustível",
+      "codigo": 9011,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Depósito de Resíduos ITM",
+      "codigo": 7001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Laboratório",
+      "codigo": 9036,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Depósito de Produtos Químicos",
+      "codigo": 9036,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "DIR (Depósito Intermediário de Resíduos)",
+      "codigo": 9028,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Container Recepção da Portaria",
+      "codigo": 9012,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Pátio das Contratadas",
+      "codigo": 9035,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêineres RH",
+      "codigo": 9036,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Tenda Pátio das Contratadas",
+      "codigo": 9075,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Captação Josino - Bombas",
+      "codigo": 9007,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Poço de Captação Pires",
+      "codigo": 9050,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Balança Rodoviária",
+      "codigo": 9016,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner Elétrica ITM",
+      "codigo": 7001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Lavador de Rodas",
+      "codigo": 9013,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner Ferramentaria PCM ITM",
+      "codigo": 7001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner PM-05",
+      "codigo": 9008,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Torre de Telecomunicações Meio Ambiente",
+      "codigo": 9077,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Novas Tendas OEM",
+      "codigo": 9025,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Centro de Treinamentos José Mendes Nogueira",
+      "codigo": 9039,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner Manuteção Mecânica ITM",
+      "codigo": 7001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêineres e Tenda do Peneiramento Móvel",
+      "codigo": 9008,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner Logística Portaria",
+      "codigo": 9012,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Portaria Oeste",
+      "codigo": 9051,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Guarita Centro de Treinamento",
+      "codigo": 9039,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner do Pátio de Equipamentos",
+      "codigo": 9079,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Ponto de Ônibus Adm",
+      "codigo": 9036,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Portaria Leste",
+      "codigo": 9080,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Tenda da Moagem",
+      "codigo": null,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Torre de Telecomunicação Nascente",
+      "codigo": 9076,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Platô Administrativo",
+      "codigo": 9017,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Laboratório de Processos",
+      "codigo": 7001,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "ETE CTE",
+      "codigo": 9039,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "ETE Platô Adm",
+      "codigo": 9002,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-06",
+      "dias": -384,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêineres Adm",
+      "codigo": 9036,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-25",
+      "dias": -365,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Refeitório ITM",
+      "codigo": 9081,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-25",
+      "dias": -365,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Pátio Civil",
+      "codigo": 9085,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-25",
+      "dias": -365,
+      "situacao": "vencido"
+    },
+    {
+      "area": "ETE ITM",
+      "codigo": 9086,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-08-25",
+      "dias": -365,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Poço de Captação Pires",
+      "codigo": 9050,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-09-03",
+      "dias": -356,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Poço 08",
+      "codigo": 9087,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-09-03",
+      "dias": -356,
+      "situacao": "vencido"
+    },
+    {
+      "area": "HP 100",
+      "codigo": 9008,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-09-04",
+      "dias": -355,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Poço 03 Oficina",
+      "codigo": 9033,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-09-04",
+      "dias": -355,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner Manuteção Mecânica ITM",
+      "codigo": 7001,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-09-04",
+      "dias": -355,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Separador Magnético",
+      "codigo": 3000,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-10-04",
+      "dias": -325,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Filtragem de Prensa",
+      "codigo": 6006,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-10-04",
+      "dias": -325,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner Logística Portaria",
+      "codigo": 9012,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-10-04",
+      "dias": -325,
+      "situacao": "vencido"
+    },
+    {
+      "area": "ETR Norte",
+      "codigo": 9088,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-10-04",
+      "dias": -325,
+      "situacao": "vencido"
+    },
+    {
+      "area": "ETR Leste",
+      "codigo": 9089,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-10-04",
+      "dias": -325,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Plataforma de Enlonamento",
+      "codigo": 9090,
+      "documento": "Inspeção Semestral (IS)",
+      "data": "2025-11-03",
+      "dias": -295,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Planta Piloto",
+      "codigo": 9005,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-11-04",
+      "dias": -294,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Captação Josino - Bombas",
+      "codigo": 9007,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-11-04",
+      "dias": -294,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Depósito Facilities",
+      "codigo": 9074,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-12-03",
+      "dias": -265,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Fábrica de Placas e Container Meio Ambiente",
+      "codigo": 9074,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-12-03",
+      "dias": -265,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Pátio das Contratadas",
+      "codigo": 9035,
+      "documento": "Laudo completo (medição)",
+      "data": "2025-12-03",
+      "dias": -265,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Britagem",
+      "codigo": 1000,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-01-03",
+      "dias": -234,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Floculantes",
+      "codigo": 4000,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-01-03",
+      "dias": -234,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Espessadores",
+      "codigo": 4000,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-01-03",
+      "dias": -234,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Galpão de Ácido Nitrico",
+      "codigo": 4000,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-01-03",
+      "dias": -234,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Tanques Agitadores",
+      "codigo": 4000,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-01-03",
+      "dias": -234,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Poço Artesiano 2",
+      "codigo": 9053,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-01-04",
+      "dias": -233,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Novas Tendas OEM",
+      "codigo": 9025,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-02-04",
+      "dias": -202,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Eletrocentro Filtragem Prensa 1",
+      "codigo": 6006,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-03-03",
+      "dias": -175,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Eletrocentro Filtragem Prensa 2",
+      "codigo": 6006,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-03-03",
+      "dias": -175,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Torre de Resfriamento",
+      "codigo": 5001,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-05-03",
+      "dias": -114,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Casa de Máquinas",
+      "codigo": 5001,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-05-03",
+      "dias": -114,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Guarita Centro de Treinamento",
+      "codigo": 9039,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-05-06",
+      "dias": -111,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Caixa Australianas 1",
+      "codigo": 7001,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-06-03",
+      "dias": -83,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Caixa Australianas 2",
+      "codigo": 7001,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-06-03",
+      "dias": -83,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Caixa Australianas 3",
+      "codigo": 7001,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-06-03",
+      "dias": -83,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Caixa Australianas 4",
+      "codigo": 7001,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-06-03",
+      "dias": -83,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Eletrocentro Bombas de Água",
+      "codigo": 7001,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-06-03",
+      "dias": -83,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Bombas de Água",
+      "codigo": 7001,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-06-03",
+      "dias": -83,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Portaria Central",
+      "codigo": 9012,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-06-03",
+      "dias": -83,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Vestíarios",
+      "codigo": 9036,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-06-03",
+      "dias": -83,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Restaurante",
+      "codigo": 9036,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-06-03",
+      "dias": -83,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Quiosque Adm",
+      "codigo": 9036,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-06-03",
+      "dias": -83,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêineres e Tenda do Peneiramento Móvel",
+      "codigo": 9008,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-06-04",
+      "dias": -82,
+      "situacao": "vencido"
+    },
+    {
+      "area": "Contêiner do Pátio de Equipamentos",
+      "codigo": 9079,
+      "documento": "Laudo completo (medição)",
+      "data": "2026-08-03",
+      "dias": -22,
+      "situacao": "vencido"
+    }
+  ],
+  "nao_conformidades": [],
+  "nc_abertas": 0,
+  "nc_status_counts": {},
+  "nc_severidade_counts": {}
+}
