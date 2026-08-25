@@ -1,0 +1,30 @@
+
+=== Controle (max_row=109, max_col=29) ===
+A2='Código da Área' | B2='LD\n(ÁREA CRIADA)' | C2='DEMARCAÇÃO NO QGIS' | D2='ÁREA À SER CONSIDERADA' | E2='Descrição da Área ' | F2='RI Inicial' | G2='ART Inicial' | H2='MC' | I2='DE' | J2='MD' | K2='LM' | L2='ADEQUAÇÃO %'
+L3='Captação' | M3='Descida' | N3='Aterramento' | O3='DPS'
+sample row 4: A=2 | B=1000 | C='001' | E='Britagem' | F='K19-204-FER-RI-003-R00' | G=6140233 | H='K19-204-FER-MC-003' | I='K19-204-FER-DE-023' | J='K19-204-FER-MD-023' | K='K19-204-FER-LM-023' | L=1 | M=1 | N=1 | O=1
+
+=== Desenhos (max_row=93, max_col=39) ===
+A3='OBJETO: Prestação de serviços de engenharia em formato de contrato ‘guarda-chuva’ para elaboração de estudos de análise de Riscos de Descarga Elétrica Atmosférica nas instalações da CONTRATANTE, localizados nos estados Minas Gerais, Espírito'
+A4='Número' | B4='Obs.:' | C4='Descrição da Área ' | D4='Título 1' | E4='Título 2' | F4='Título 3' | G4='Folhas' | H4='Revisão' | I4='Data de Emissão' | J4='Número MSI' | K4='Número J.Mendes'
+sample row 5: A='K19-204-FER-DE-001' | C='Planta Moinho de Rolos' | D='PROJETO EXECUTIVO DO SISTEMA DE PROTEÇÃO CONTRA DESCARGAS ATMOSFÉRICAS (SPDA)' | E='PLANTA MOINHO DE ROLOS' | F="PLANTA BAIXA, COBERTURA, CORTES A-A' E B-B' COM VOLUME PROTEGIDO" | G=1 | H=0 | I=datetime.datetime(2020, 9, 1, 0, 0)
+
+=== MDs (max_row=87, max_col=12) ===
+C2='CONTRATO:  089/2026 -  Empresa: MSI Engenharia e Tecnologia LTDA'
+A3='Número' | B3='ART' | C3='Descrição da Área ' | E3='Título 2' | F3='Título 4' | G3='Título 5' | H3='Título 6' | I3='Revisão' | J3='Data de Emissão' | K3='Número MSI' | L3='Número J.Mendes'
+sample row 4: A='K19-204-FER-MD-001' | B=6140344 | C='Planta Moinho de Rolos' | D='PROJETO EXECUTIVO ' | E='FERRO+ MINERAÇÃO S.A' | F='PLANTA MOINHO DE ROLOS' | G='SPDA / ATERRAMENTO' | H='MEMORIAL DESCRITIVO DO PROJETO DE SPDA ' | I=0 | J=datetime.datetime(2020, 9, 1, 0, 0)
+
+=== LMs (max_row=89, max_col=266) ===
+C2='CONTRATO:  089/2026 -  Empresa: MSI Engenharia e Tecnologia LTDA'
+A3='Número' | B3='Obs.:' | C3='Descrição da Área ' | D3='Título 1' | E3='Título 2' | F3='Título 4' | G3='Título 5' | H3='Título 6' | I3='Revisão' | J3='Data de Emissão' | K3='Número MSI' | L3='Número J.Mendes'
+sample row 4: A='K19-204-FER-LM-001' | B=6140344 | C='Planta Moinho de Rolos' | D='PROJETO EXECUTIVO ' | E='FERRO+ MINERAÇÃO S.A' | F='PLANTA MOINHO DE ROLOS' | G='SPDA / ATERRAMENTO' | H='LISTA DE MATERIAIS DO PROJETO DE SPDA ' | I=0 | J=datetime.datetime(2020, 9, 1, 0, 0)
+
+=== MCs (max_row=98, max_col=12) ===
+C2='CONTRATO:  089/2026 -  Empresa: MSI Engenharia e Tecnologia LTDA'
+A3='Número' | B3='Obs.:' | C3='Descrição da Área ' | D3='Título 1' | E3='Título 2' | F3='Título 3' | G3='Título 4' | H3='Título 5' | I3='Revisão' | J3='Data de Emissão' | K3='Número MSI' | L3='Número J.Mendes'
+sample row 4: A='K19-204-FER-MC-001' | C='Classificação' | D='PROJETO BASICO' | E='FERRO+ MINERAÇÃO S.A' | F='CLASSIFICAÇÃO' | G='SPDA / ATERRAMENTO' | H='ANÁLISE DE RISCO DO PROJETO DE SPDA' | I=0 | J=datetime.datetime(2020, 11, 1, 0, 0)
+
+=== RIs (max_row=99, max_col=30) ===
+C2='CONTRATO:  089/2026 -  Empresa: MSI Engenharia e Tecnologia LTDA'
+A3='Número' | B3='ART' | C3='Descrição da Área ' | D3='Título 1' | E3='Título 2' | F3='Título 3' | G3='Título 4' | H3='Título 5' | I3='Revisão' | J3='Data de Emissão' | K3='Número MSI' | L3='Número J.Mendes' | M3='Não Conformidade - Descrição' | N3='Severidade' | O3='Status'
+sample row 4: A='K19-204-FER-RI-001' | B=6140206 | C='Classificação' | D='PROJETO BASICO' | E='FERRO+ MINERAÇÃO S.A' | F='CLASSIFICAÇÃO' | G='SPDA / ATERRAMENTO' | H='RELATÓRIO DE INSPEÇÃO' | I=0 | J=datetime.datetime(2020, 7, 1, 0, 0)

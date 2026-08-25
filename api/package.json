@@ -1,0 +1,20 @@
+{
+  "name": "painel-spda-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API do Painel SPDA (self-hosted: Node.js + PostgreSQL)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "migrate:up": "node-pg-migrate up --migration-file-language sql",
+    "migrate:down": "node-pg-migrate down --migration-file-language sql",
+    "bootstrap-admin": "node src/scripts/bootstrap-admin.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "node-pg-migrate": "^7.5.2",
+    "pg": "^8.11.5"
+  }
+}

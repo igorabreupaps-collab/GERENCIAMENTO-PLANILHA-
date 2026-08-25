@@ -1,0 +1,9 @@
+.git
+.env
+node_modules
+api/node_modules
+*.png
+*.xlsx
+~$*
+dashboard.html
+dashboard_data.json

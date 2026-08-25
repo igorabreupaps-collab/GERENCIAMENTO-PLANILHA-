@@ -1,81 +1,88 @@
 # Painel SPDA — Ferro+ Mineração / MSI Engenharia
 
-Pasta com todo o código-fonte do painel de conformidade SPDA (contrato 089/2026).
-O painel final é um **único arquivo HTML autocontido** (`dashboard.html`) — não precisa
-de servidor, backend ou instalação de nada para ser aberto; basta dar duplo clique
-ou abrir pelo navegador.
+O painel migrou de "planilha Excel + script Python" para um app web com
+banco de dados de verdade (**PostgreSQL, self-hosted via Docker Compose**),
+login e perfis de acesso (Visualizador / Editor / Administrador). Dado
+editado por um Editor aparece automaticamente para todo mundo com o
+dashboard aberto (atualização por polling a cada poucos segundos) — sem
+rodar script, sem reabrir arquivo.
 
-Os outros arquivos são o "código-fonte" que gera esse HTML a partir da planilha
-Excel oficial. Você só precisa deles quando quiser **atualizar os dados** (planilha
-nova, revisão nova) e regerar o painel.
+**O painel antigo (`dashboard.html`, gerado a partir da planilha) continua
+funcionando exatamente como antes** — veja "Painel antigo (planilha)" no fim
+deste documento. Nada foi apagado.
 
-## Estrutura da pasta
+## Arquitetura
 
-- `dashboard.html` — o painel pronto, já gerado. Pode abrir direto no navegador.
-- `K19-204-FER-LD-001-R05 - Lista de Documentos (MSI).xlsx` — a planilha oficial
-  (fonte dos dados).
-- `extract_data.py` — lê a planilha `.xlsx` e gera `dashboard_data.json`.
-- `dashboard_data.json` — os dados já extraídos, em JSON (é o que `build_dashboard.py`
-  usa como entrada).
-- `build_dashboard.py` — gera o `dashboard.html` final a partir do `dashboard_data.json`
-  (contém todo o HTML/CSS/JS do painel).
-- `extend_v2.py` — script auxiliar usado uma vez para reestruturar a planilha (colunas
-  de-para, aba de não conformidades/pendências em RIs). Não precisa rodar de novo a
-  menos que queira reaplicar essa reestruturação em outra planilha do zero.
-- `vendor/xlsx.core.min.js` — biblioteca SheetJS embutida no painel (permite o botão
-  "Carregar planilha" funcionar direto no navegador, sem servidor).
-- `requirements.txt` — única dependência Python (`openpyxl`, usada para ler `.xlsx`).
+- `postgres` — PostgreSQL 16, dados persistidos num volume Docker.
+- `api` — backend Node.js/Express: autenticação (e-mail+senha, JWT próprio),
+  CRUD de Áreas/Não Conformidades, gestão de usuários, e serve o frontend
+  estático (`web/`) na mesma origem — sem CORS.
+- `migrate` — serviço que roda uma vez a cada `docker compose up`: aplica as
+  migrations SQL e garante que o primeiro usuário Administrador existe.
+- `web/` — frontend (login + 6 painéis + Editor com edição real + painel
+  Usuários), HTML/CSS/JS puro, sem build step.
 
-## Como rodar no VS Code
+Autorização por perfil é decidida inteiramente pela API (middlewares
+Express) — o banco não usa Row Level Security, porque agora só a própria API
+fala com o Postgres (o navegador nunca acessa o banco direto).
 
-1. Extraia o `.zip` e abra a pasta no VS Code (`Arquivo > Abrir Pasta...`).
-2. Abra um terminal integrado (`Ctrl+\`` ou menu `Terminal > New Terminal`).
-3. (Recomendado) crie um ambiente virtual e instale a dependência:
+## Como rodar
 
+1. Instale o [Docker](https://docs.docker.com/get-docker/) (com Docker Compose) na máquina/servidor onde isso vai rodar.
+2. Copie o template de variáveis de ambiente e edite os valores:
    ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate      # no Windows: .venv\Scripts\activate
-   pip install -r requirements.txt
+   cp .env.example .env
    ```
+   Troque `POSTGRES_PASSWORD`, `JWT_SECRET` (um valor aleatório longo, ex.:
+   `openssl rand -base64 48`), e `BOOTSTRAP_ADMIN_EMAIL`/`BOOTSTRAP_ADMIN_PASSWORD`
+   (a conta do primeiro Administrador, criada automaticamente na primeira subida).
+3. Suba tudo:
+   ```bash
+   docker compose up -d --build
+   ```
+   Na primeira vez, o serviço `migrate` aplica o schema e cria o admin de
+   bootstrap antes do `api` subir — acompanhe com `docker compose logs -f migrate`.
+4. Abra `http://localhost:3000` (ou o endereço/porta que o reverse proxy da
+   empresa expuser) e entre com o e-mail/senha do `.env`.
+5. Pare tudo com `docker compose down` (ou `docker compose down -v` para
+   também apagar os dados do Postgres — cuidado, isso é destrutivo).
 
-4. Para só **ver o painel** como está: abra `dashboard.html` com a extensão
-   "Live Server" do VS Code, ou simplesmente dê duplo clique nele no explorador
-   de arquivos — ele abre em qualquer navegador.
+### Criar mais usuários
 
-## Como atualizar os dados (planilha nova)
+Só um Administrador pode criar contas, pelo painel **Usuários** dentro do
+sistema. Como não há envio de e-mail configurado neste ambiente self-hosted,
+o Administrador define a senha inicial na hora e informa a pessoa por fora
+(chat, telefone) — ela pode trocar a senha depois de logar.
 
-Sempre que a planilha `.xlsx` for atualizada (nova revisão, novos itens, etc.),
-rode os dois scripts em sequência, na pasta do projeto:
+### Evoluindo o schema depois
+
+Migrations novas vão em `api/migrations/` (SQL puro, com `-- Up Migration` e
+`-- Down Migration`), aplicadas via `node-pg-migrate`. Para rodar manualmente
+contra um banco já no ar:
+```bash
+docker compose run --rm migrate
+```
+
+## O que ainda não foi implementado
+
+- **Importador da planilha para o Postgres**: não existe mais nenhum script
+  pronto para isso (o antigo `scripts/migrate_to_supabase.py` falava com a
+  API REST do Supabase e foi removido junto com o resto daquele caminho).
+  Precisaria ser escrito do zero, batendo direto na API nova, se a
+  reimportação do Excel ainda for necessária.
+- Troca de senha pela própria pessoa tem endpoint pronto na API
+  (`PATCH /api/me/password`) mas ainda não tem botão na interface.
+
+## Painel antigo (planilha)
+
+Fluxo original, mantido intacto e funcional:
+
+- `dashboard.html` — o painel pronto, gerado a partir da planilha. Abre direto no navegador.
+- `K19-204-FER-LD-001-R05 - Lista de Documentos (MSI).xlsx` — a planilha oficial.
+- `extract_data.py` — lê a planilha e gera `dashboard_data.json`.
+- `build_dashboard.py` — gera o `dashboard.html` a partir do `dashboard_data.json`.
 
 ```bash
 python3 extract_data.py "K19-204-FER-LD-001-R05 - Lista de Documentos (MSI).xlsx"
 python3 build_dashboard.py dashboard_data.json dashboard.html
 ```
-
-- O primeiro comando lê a planilha e regrava `dashboard_data.json`.
-- O segundo lê esse JSON e regrava `dashboard.html` com os dados novos.
-
-Se quiser usar outra planilha ou nomes de arquivo diferentes, basta passar os
-caminhos como argumento:
-
-```bash
-python3 extract_data.py "caminho/para/outra_planilha.xlsx"
-python3 build_dashboard.py dashboard_data.json dashboard_novo.html
-```
-
-## Sobre o botão "Carregar planilha" dentro do próprio painel
-
-O `dashboard.html` também permite carregar uma planilha `.xlsx` diretamente pelo
-navegador (sem precisar rodar Python) — útil para atualizações rápidas sem abrir
-o VS Code. Os scripts Python acima fazem a mesma coisa, mas via linha de comando,
-e são úteis para automatizar ou versionar o processo.
-
-## Aba "Editor" e publicação ao vivo
-
-A aba **Editor** dentro do painel (pendências abertas e pendências de execução)
-só publica atualizações automaticamente quando o `dashboard.html` está aberto
-através do link publicado no Cowork/claude.ai (o artefato já enviado a você).
-Ao abrir este `dashboard.html` localmente (fora do Cowork, como este arquivo da
-pasta), a aba Editor funciona, mas o botão de salvar baixa um novo `.html`
-atualizado em vez de publicar automaticamente — é o comportamento esperado para
-um arquivo local/standalone.

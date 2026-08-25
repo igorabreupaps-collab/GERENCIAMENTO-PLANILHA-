@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MSI Engenharia — Gestão de Documentos SPDA · Ferro+ Mineração</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="login-wrap" id="login-wrap">
+  <form class="login-card" id="login-form">
+    <div class="login-logo login-logo-full">
+      <img src="logo-full.png" alt="Hiveflow" width="150" height="147">
+    </div>
+    <div class="field">
+      <label for="login-email">E-mail</label>
+      <input type="email" id="login-email" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="login-password">Senha</label>
+      <div class="password-field">
+        <input type="password" id="login-password" autocomplete="current-password" required>
+        <button type="button" class="password-toggle" id="password-toggle" aria-label="Mostrar senha"></button>
+      </div>
+    </div>
+    <button class="btn-primary" id="login-submit" type="submit">Entrar</button>
+    <div class="error-text" id="login-error"></div>
+  </form>
+  <div class="login-footer">© 2026 MSI Engenharia & Tecnologia. Todos os direitos reservados.</div>
+</div>
+
+<div class="app" id="app" hidden>
+
+  <nav class="sidebar" aria-label="Navegação do painel">
+    <div class="brand-block">
+      <img class="sidebar-logo" src="logo-full.png" alt="Hiveflow" width="120" height="118">
+    </div>
+    <ul class="nav-menu" role="tablist" aria-orientation="vertical">
+      <li><button class="nav-item active" role="tab" aria-selected="true" data-panel="overview">
+        <span class="nav-icon" id="icon-grid"></span><span class="nav-label">Visão Geral</span>
+      </button></li>
+      <li><button class="nav-item" role="tab" aria-selected="false" data-panel="vencimentos">
+        <span class="nav-icon" id="icon-alert-triangle"></span><span class="nav-label">Vencimentos</span><span class="nav-badge" id="nav-badge-vencimentos">0</span>
+      </button></li>
+      <li><button class="nav-item" role="tab" aria-selected="false" data-panel="pendencias">
+        <span class="nav-icon" id="icon-clipboard-list"></span><span class="nav-label">Pendências</span><span class="nav-badge tone-warning" id="nav-badge-pendencias">0</span>
+      </button></li>
+      <li><button class="nav-item" role="tab" aria-selected="false" data-panel="naoconformidades">
+        <span class="nav-icon" id="icon-alert-octagon"></span><span class="nav-label">Pendências de Execução</span><span class="nav-badge" id="nav-badge-nc">0</span>
+      </button></li>
+      <li><button class="nav-item" role="tab" aria-selected="false" data-panel="documentacao">
+        <span class="nav-icon" id="icon-file-text"></span><span class="nav-label">Documentação</span>
+      </button></li>
+      <li><button class="nav-item" role="tab" aria-selected="false" data-panel="editor">
+        <span class="nav-icon" id="icon-pencil"></span><span class="nav-label">Editor</span>
+      </button></li>
+      <li id="nav-users-li" hidden><button class="nav-item" role="tab" aria-selected="false" data-panel="usuarios">
+        <span class="nav-icon" id="icon-users"></span><span class="nav-label">Usuários</span>
+      </button></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle" type="button">
+        <span class="btn-icon" id="themeIcon"></span><span id="themeLabel">Modo escuro</span>
+      </button>
+      <div class="sidebar-user">
+        <span id="user-email"></span>
+        <span class="role-pill" id="user-role-pill"></span>
+      </div>
+      <button class="signout-btn" id="signout-btn" type="button">Sair</button>
+      <div class="sidebar-meta" id="sidebar-meta"></div>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <section class="panel active" id="panel-overview" role="tabpanel">
+      <div class="panel-head">
+        <h1 class="title">Resumo geral</h1>
+        <p class="subtitle">Indicadores consolidados a partir do controle de áreas, pendências de execução e documentação técnica.</p>
+      </div>
+      <div class="alert-banner" id="overview-insight"><span class="icon" id="icon-insight"></span><div></div></div>
+      <div class="stat-grid" id="kpi-grid"></div>
+      <div class="overview-body">
+        <div class="grid-2">
+          <div id="chart-status-slot"></div>
+          <div id="chart-nc-slot"></div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><h3>Vencimentos mais urgentes</h3><button class="link-btn" data-panel="vencimentos" type="button">Ver todos →</button></div>
+            <div class="preview-list" id="preview-venc"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Pendências abertas</h3><button class="link-btn" data-panel="pendencias" type="button">Ver todas →</button></div>
+            <div class="preview-list" id="preview-pend"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-vencimentos" role="tabpanel">
+      <div class="panel-head">
+        <h1 class="title">Vencimentos de laudos e inspeções</h1>
+        <p class="subtitle">Documentos de conformidade (laudo completo por medição e inspeção semestral) organizados por urgência.</p>
+      </div>
+      <div class="alert-banner tone-critical"><span class="icon" id="icon-alert-1"></span><div id="alert-text"></div></div>
+      <div class="panel-body">
+        <div class="table-scroll">
+          <table class="list-table">
+            <thead><tr><th>Área</th><th>Documento</th><th>Validade</th><th>Situação</th></tr></thead>
+            <tbody id="venc-tbody"></tbody>
+          </table>
+        </div>
+        <div id="resto-note"></div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-pendencias" role="tabpanel">
+      <div class="panel-head">
+        <h1 class="title">Pendências abertas</h1>
+        <p class="subtitle">Vem do campo "Pendência" das áreas (aba Editor → Áreas).</p>
+      </div>
+      <div class="panel-body">
+        <div class="table-scroll">
+          <table class="list-table">
+            <thead><tr><th>Área</th><th>Ação pendente</th></tr></thead>
+            <tbody id="pend-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-naoconformidades" role="tabpanel">
+      <div class="panel-head">
+        <h1 class="title">Pendências de Execução</h1>
+        <p class="subtitle">Não conformidades registradas, com severidade, status e responsável.</p>
+      </div>
+      <div class="alert-banner tone-critical" id="nc-alert-banner"><span class="icon" id="nc-alert-icon"></span><div id="nc-alert-text"></div></div>
+      <div class="panel-body">
+        <div class="table-scroll">
+          <table class="list-table">
+            <thead><tr><th>Área</th><th>RI Nº</th><th>Descrição</th><th>Severidade</th><th>Status</th><th>Responsável</th><th>Data</th></tr></thead>
+            <tbody id="nc-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-documentacao" role="tabpanel">
+      <div class="panel-head">
+        <h1 class="title">Documentação técnica emitida</h1>
+        <p class="subtitle">Volume de documentos emitidos por tipo, desde o início do contrato.</p>
+      </div>
+      <div class="panel-body doc-panel-body">
+        <div id="doc-chart-slot"></div>
+        <p class="table-note" id="doc-footer-note"></p>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-editor" role="tabpanel">
+      <div class="panel-head">
+        <h1 class="title">Editor</h1>
+        <p class="subtitle">Edições aqui gravam direto no banco e aparecem para todo mundo automaticamente.</p>
+      </div>
+      <div class="panel-body">
+        <div class="editor-body">
+          <div class="readonly-banner" id="editor-readonly-banner" hidden>
+            Você está como Visualizador — pode ver todos os dados, mas não editar. Peça a um Administrador para mudar seu perfil se precisar editar.
+          </div>
+
+          <div class="card">
+            <div class="editor-section-head">
+              <h3>Áreas (Controle)</h3>
+              <button class="editor-add-btn" id="editor-add-area" type="button"><span class="btn-icon" id="icon-plus-1"></span>Adicionar área</button>
+            </div>
+            <div class="table-scroll">
+              <table class="editor-table">
+                <thead><tr>
+                  <th style="width:9%">Código LD</th><th style="width:20%">Descrição</th><th style="width:14%">Status</th>
+                  <th style="width:9%">Adequação (0–1)</th><th style="width:10%">Validade Laudo</th><th style="width:10%">Validade IS</th>
+                  <th style="width:9%">Dossiê</th><th style="width:15%">Pendência</th><th style="width:36px"></th>
+                </tr></thead>
+                <tbody id="editor-areas-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="editor-section-head">
+              <h3>Não Conformidades</h3>
+              <button class="editor-add-btn" id="editor-add-nc" type="button"><span class="btn-icon" id="icon-plus-2"></span>Adicionar linha</button>
+            </div>
+            <div class="table-scroll">
+              <table class="editor-table">
+                <thead><tr>
+                  <th style="width:16%">Área</th><th style="width:10%">RI Nº</th><th style="width:22%">Descrição</th>
+                  <th style="width:10%">Severidade</th><th style="width:10%">Status</th><th style="width:12%">Responsável</th>
+                  <th style="width:11%">Data</th><th style="width:36px"></th>
+                </tr></thead>
+                <tbody id="editor-nc-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="editor-section-head">
+              <h3>Desenhos (DE)</h3>
+              <button class="editor-add-btn" data-add-doc-tipo="Desenhos (DE)" type="button"><span class="btn-icon" id="icon-plus-3"></span>Adicionar desenho</button>
+            </div>
+            <div class="table-scroll">
+              <table class="editor-table">
+                <thead><tr>
+                  <th style="width:12%">Número</th><th style="width:14%">Área</th><th style="width:20%">Título</th>
+                  <th style="width:7%">Rev.</th><th style="width:10%">Emissão</th><th style="width:10%">Nº MSI</th>
+                  <th style="width:10%">Nº J.Mendes</th><th style="width:13%">Observação</th><th style="width:36px"></th>
+                </tr></thead>
+                <tbody id="editor-doc-de-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="editor-section-head">
+              <h3>Memoriais Descritivos (MD)</h3>
+              <button class="editor-add-btn" data-add-doc-tipo="Memoriais Descritivos (MD)" type="button"><span class="btn-icon" id="icon-plus-4"></span>Adicionar memorial</button>
+            </div>
+            <div class="table-scroll">
+              <table class="editor-table">
+                <thead><tr>
+                  <th style="width:12%">Número</th><th style="width:14%">Área</th><th style="width:20%">Título</th>
+                  <th style="width:7%">Rev.</th><th style="width:10%">Emissão</th><th style="width:10%">Nº MSI</th>
+                  <th style="width:10%">Nº J.Mendes</th><th style="width:13%">Observação</th><th style="width:36px"></th>
+                </tr></thead>
+                <tbody id="editor-doc-md-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="editor-section-head">
+              <h3>Listas de Materiais (LM)</h3>
+              <button class="editor-add-btn" data-add-doc-tipo="Listas de Materiais (LM)" type="button"><span class="btn-icon" id="icon-plus-5"></span>Adicionar lista</button>
+            </div>
+            <div class="table-scroll">
+              <table class="editor-table">
+                <thead><tr>
+                  <th style="width:12%">Número</th><th style="width:14%">Área</th><th style="width:20%">Título</th>
+                  <th style="width:7%">Rev.</th><th style="width:10%">Emissão</th><th style="width:10%">Nº MSI</th>
+                  <th style="width:10%">Nº J.Mendes</th><th style="width:13%">Observação</th><th style="width:36px"></th>
+                </tr></thead>
+                <tbody id="editor-doc-lm-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="editor-section-head">
+              <h3>Análises de Risco (MC)</h3>
+              <button class="editor-add-btn" data-add-doc-tipo="Análises de Risco (MC)" type="button"><span class="btn-icon" id="icon-plus-6"></span>Adicionar análise</button>
+            </div>
+            <div class="table-scroll">
+              <table class="editor-table">
+                <thead><tr>
+                  <th style="width:12%">Número</th><th style="width:14%">Área</th><th style="width:20%">Título</th>
+                  <th style="width:7%">Rev.</th><th style="width:10%">Emissão</th><th style="width:10%">Nº MSI</th>
+                  <th style="width:10%">Nº J.Mendes</th><th style="width:13%">Observação</th><th style="width:36px"></th>
+                </tr></thead>
+                <tbody id="editor-doc-mc-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="editor-section-head">
+              <h3>Relatórios de Inspeção (RI)</h3>
+              <button class="editor-add-btn" data-add-doc-tipo="Relatórios de Inspeção (RI)" type="button"><span class="btn-icon" id="icon-plus-7"></span>Adicionar relatório</button>
+            </div>
+            <div class="table-scroll">
+              <table class="editor-table">
+                <thead><tr>
+                  <th style="width:12%">Número</th><th style="width:14%">Área</th><th style="width:20%">Título</th>
+                  <th style="width:7%">Rev.</th><th style="width:10%">Emissão</th><th style="width:10%">Nº MSI</th>
+                  <th style="width:10%">Nº J.Mendes</th><th style="width:13%">Observação</th><th style="width:36px"></th>
+                </tr></thead>
+                <tbody id="editor-doc-ri-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-usuarios" role="tabpanel">
+      <div class="panel-head">
+        <h1 class="title">Usuários</h1>
+        <p class="subtitle">Crie contas e defina o perfil de acesso de cada uma.</p>
+      </div>
+      <div class="panel-body">
+        <div class="editor-note" style="margin-bottom:16px;">Este sistema não envia e-mail de convite. Defina uma senha inicial abaixo e informe a pessoa por fora (chat, telefone) — ela pode trocá-la depois de logar.</div>
+        <div class="card">
+          <form class="invite-form" id="invite-form">
+            <div class="field"><label for="invite-email">E-mail</label><input type="email" id="invite-email" required></div>
+            <div class="field"><label for="invite-nome">Nome (opcional)</label><input type="text" id="invite-nome"></div>
+            <div class="field"><label for="invite-password">Senha inicial</label><input type="password" id="invite-password" minlength="8" required></div>
+            <div class="field">
+              <label for="invite-role">Perfil</label>
+              <select id="invite-role">
+                <option value="viewer">Visualizador</option>
+                <option value="editor" selected>Editor</option>
+                <option value="admin">Administrador</option>
+              </select>
+            </div>
+            <button class="btn-primary" id="invite-submit" type="submit" style="width:auto;margin-top:0;">Convidar</button>
+          </form>
+          <div class="error-text" id="invite-status"></div>
+        </div>
+        <div class="table-scroll" style="margin-top:16px;">
+          <table class="list-table">
+            <thead><tr><th>E-mail</th><th>Nome</th><th>Perfil</th><th></th></tr></thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="tooltip" id="tooltip"><span class="tt-value" id="tt-value"></span> <span id="tt-label"></span></div>
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="toast-icon" id="toast-icon"></span>
+  <span id="toast-text"></span>
+</div>
+
+<script src="config.js"></script>
+<script src="renderer.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
