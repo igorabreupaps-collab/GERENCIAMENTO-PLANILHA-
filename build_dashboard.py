@@ -19,19 +19,28 @@ import json
 import sys
 import os
 
-DATA_PATH = sys.argv[1] if len(sys.argv) > 1 else "dashboard_data.json"
-OUT_PATH = sys.argv[2] if len(sys.argv) > 2 else "dashboard.html"
-SHEETJS_PATH = sys.argv[3] if len(sys.argv) > 3 else os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "vendor", "xlsx.core.min.js"
-)
 
-with open(DATA_PATH, encoding="utf-8") as f:
-    D = json.load(f)
+def resolve_paths(argv):
+    """CLI args -> (data_path, out_path, sheetjs_path), com os defaults de
+    sempre. Extraído do nível de módulo pra não rodar (nem exigir um
+    dashboard_data.json no disco) só por importar este arquivo -- é o que
+    permite testar render_html() isoladamente."""
+    data_path = argv[1] if len(argv) > 1 else "dashboard_data.json"
+    out_path = argv[2] if len(argv) > 2 else "dashboard.html"
+    sheetjs_path = argv[3] if len(argv) > 3 else os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "vendor", "xlsx.core.min.js"
+    )
+    return data_path, out_path, sheetjs_path
 
-with open(SHEETJS_PATH, encoding="utf-8") as f:
-    SHEETJS_SRC = f.read()
 
-INITIAL_DATA_JSON = json.dumps(D, ensure_ascii=False)
+def read_text_file(path):
+    with open(path, encoding="utf-8") as f:
+        return f.read()
+
+
+def load_json_data(path):
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
 
 # ---------------------------------------------------------------------------
 # Icon set: small hand-authored outline SVGs (stroke-based, 24x24 viewBox,
@@ -1564,15 +1573,29 @@ HTML_SHELL = f"""<!DOCTYPE html>
 </body>
 </html>"""
 
-FINAL_HTML = (
-    HTML_SHELL
-    .replace("__CSS__", CSS)
-    .replace("__SHEETJS__", SHEETJS_SRC)
-    .replace("__RENDERER__", RENDERER_JS)
-    .replace("%%INITIAL_DATA_JSON%%", INITIAL_DATA_JSON)
-)
+def render_html(data, sheetjs_src):
+    """Monta o HTML final: shell estático (CSS/ICONS já embutidos) + SheetJS
+    + motor de renderização + o estado inicial (extraído da planilha na hora
+    da geração). Função pura -- não toca disco, então é testável direto."""
+    initial_data_json = json.dumps(data, ensure_ascii=False)
+    return (
+        HTML_SHELL
+        .replace("__CSS__", CSS)
+        .replace("__SHEETJS__", sheetjs_src)
+        .replace("__RENDERER__", RENDERER_JS)
+        .replace("%%INITIAL_DATA_JSON%%", initial_data_json)
+    )
 
-with open(OUT_PATH, "w", encoding="utf-8") as f:
-    f.write(FINAL_HTML)
 
-print("Wrote", OUT_PATH, "(", len(FINAL_HTML), "bytes )")
+def main(argv):
+    data_path, out_path, sheetjs_path = resolve_paths(argv)
+    data = load_json_data(data_path)
+    sheetjs_src = read_text_file(sheetjs_path)
+    html = render_html(data, sheetjs_src)
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(html)
+    print("Wrote", out_path, "(", len(html), "bytes )")
+
+
+if __name__ == "__main__":
+    main(sys.argv)

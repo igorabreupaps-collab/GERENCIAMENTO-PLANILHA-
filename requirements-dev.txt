@@ -1,0 +1,4 @@
+# Dependências só de teste (ver tests/python/) -- não precisa disso em
+# produção, só pra rodar `pytest` localmente.
+-r requirements.txt
+pytest>=8.0

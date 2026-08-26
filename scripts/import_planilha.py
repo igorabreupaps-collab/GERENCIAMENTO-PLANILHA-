@@ -53,42 +53,49 @@ def load_dotenv(path):
             os.environ.setdefault(key, value)
 
 
-load_dotenv(os.path.join(ROOT, ".env"))
-
-API_BASE_URL = os.environ.get("API_BASE_URL", "http://localhost:3000").rstrip("/")
-ADMIN_EMAIL = os.environ.get("IMPORT_ADMIN_EMAIL") or os.environ.get("BOOTSTRAP_ADMIN_EMAIL")
-ADMIN_PASSWORD = os.environ.get("IMPORT_ADMIN_PASSWORD") or os.environ.get("BOOTSTRAP_ADMIN_PASSWORD")
-
-if not ADMIN_EMAIL or not ADMIN_PASSWORD:
-    sys.exit(
-        "Faltam as credenciais de quem vai importar.\n"
-        "Defina IMPORT_ADMIN_EMAIL e IMPORT_ADMIN_PASSWORD no seu .env\n"
-        "(pode reaproveitar BOOTSTRAP_ADMIN_EMAIL/BOOTSTRAP_ADMIN_PASSWORD, se for o mesmo admin)."
-    )
-
-XLSX_PATH = sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith("--") else (
-    "K19-204-FER-LD-001-R05 - Lista de Documentos (MSI).xlsx"
-)
-FORCE = "--force" in sys.argv
-
-session = requests.Session()
+class ConfigError(Exception):
+    """Config obrigatória ausente/inválida -- main() decide como reportar."""
 
 
-def login():
-    r = session.post(f"{API_BASE_URL}/api/auth/login", json={"email": ADMIN_EMAIL, "password": ADMIN_PASSWORD})
+def resolve_config(argv, env):
+    """Lê CLI args + variáveis de ambiente (sem tocar o processo: não dá
+    load_dotenv nem sys.exit aqui) e devolve um dict com tudo que o import
+    precisa. Extraído do nível de módulo pra ser testável sem precisar de
+    variáveis de ambiente reais nem de um .env no disco."""
+    admin_email = env.get("IMPORT_ADMIN_EMAIL") or env.get("BOOTSTRAP_ADMIN_EMAIL")
+    admin_password = env.get("IMPORT_ADMIN_PASSWORD") or env.get("BOOTSTRAP_ADMIN_PASSWORD")
+    if not admin_email or not admin_password:
+        raise ConfigError(
+            "Faltam as credenciais de quem vai importar.\n"
+            "Defina IMPORT_ADMIN_EMAIL e IMPORT_ADMIN_PASSWORD no seu .env\n"
+            "(pode reaproveitar BOOTSTRAP_ADMIN_EMAIL/BOOTSTRAP_ADMIN_PASSWORD, se for o mesmo admin)."
+        )
+
+    xlsx_arg = argv[1] if len(argv) > 1 and not argv[1].startswith("--") else None
+    return {
+        "api_base_url": env.get("API_BASE_URL", "http://localhost:3000").rstrip("/"),
+        "admin_email": admin_email,
+        "admin_password": admin_password,
+        "xlsx_path": xlsx_arg or "K19-204-FER-LD-001-R05 - Lista de Documentos (MSI).xlsx",
+        "force": "--force" in argv,
+    }
+
+
+def login(session, api_base_url, email, password):
+    r = session.post(f"{api_base_url}/api/auth/login", json={"email": email, "password": password})
     if not r.ok:
-        sys.exit(f"Não foi possível logar em {API_BASE_URL}: {r.status_code} {r.text}")
+        sys.exit(f"Não foi possível logar em {api_base_url}: {r.status_code} {r.text}")
     session.headers.update({"Authorization": f"Bearer {r.json()['token']}"})
 
 
-def api_get(path):
-    r = session.get(f"{API_BASE_URL}{path}")
+def api_get(session, api_base_url, path):
+    r = session.get(f"{api_base_url}{path}")
     r.raise_for_status()
     return r.json()
 
 
-def api_post(path, body):
-    r = session.post(f"{API_BASE_URL}{path}", json=body)
+def api_post(session, api_base_url, path, body):
+    r = session.post(f"{api_base_url}{path}", json=body)
     if not r.ok:
         raise RuntimeError(f"POST {path} falhou ({r.status_code}): {r.text}")
     return r.json()
@@ -211,19 +218,21 @@ def norm(s):
     return (s or "").strip().casefold()
 
 
-def main():
-    print(f"Conectando em {API_BASE_URL} como {ADMIN_EMAIL}...")
-    login()
+def run_import(config, session):
+    api_base_url = config["api_base_url"]
 
-    existing = api_get("/api/areas")
-    if existing and not FORCE:
+    print(f"Conectando em {api_base_url} como {config['admin_email']}...")
+    login(session, api_base_url, config["admin_email"], config["admin_password"])
+
+    existing = api_get(session, api_base_url, "/api/areas")
+    if existing and not config["force"]:
         sys.exit(
             f"Já existem {len(existing)} área(s) cadastradas no banco. Rodar de novo duplicaria dados.\n"
             "Se é intencional, rode de novo com --force."
         )
 
-    print(f"Lendo planilha: {XLSX_PATH}")
-    wb = openpyxl.load_workbook(XLSX_PATH, data_only=True)
+    print(f"Lendo planilha: {config['xlsx_path']}")
+    wb = openpyxl.load_workbook(config["xlsx_path"], data_only=True)
     areas = read_areas(wb)
     nao_conformidades = read_nao_conformidades(wb)
     documentos = read_documentos(wb)
@@ -234,7 +243,7 @@ def main():
     print("Importando áreas...")
     area_id_by_desc = {}
     for a in areas:
-        created = api_post("/api/areas", a)
+        created = api_post(session, api_base_url, "/api/areas", a)
         area_id_by_desc[norm(created["descricao"])] = created["id"]
     print(f"  {len(area_id_by_desc)} áreas criadas.")
 
@@ -245,7 +254,7 @@ def main():
         if area_id is None:
             unmatched_nc += 1
         n["area_id"] = area_id
-        api_post("/api/nao-conformidades", n)
+        api_post(session, api_base_url, "/api/nao-conformidades", n)
     print(f"  {len(nao_conformidades)} não conformidades criadas"
           f" ({unmatched_nc} sem área correspondente exata -- ajuste manual depois pela UI).")
 
@@ -256,11 +265,20 @@ def main():
         if area_id is None:
             unmatched_doc += 1
         d["area_id"] = area_id
-        api_post("/api/documentos", d)
+        api_post(session, api_base_url, "/api/documentos", d)
     print(f"  {len(documentos)} documentos criados"
           f" ({unmatched_doc} sem área correspondente exata -- ajuste manual depois pela UI).")
 
     print("\nImportação concluída. Confira as contagens acima contra a planilha antes de considerá-la aposentada.")
+
+
+def main():
+    load_dotenv(os.path.join(ROOT, ".env"))
+    try:
+        config = resolve_config(sys.argv, os.environ)
+    except ConfigError as err:
+        sys.exit(str(err))
+    run_import(config, requests.Session())
 
 
 if __name__ == "__main__":
