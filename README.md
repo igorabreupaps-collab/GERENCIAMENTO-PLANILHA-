@@ -64,6 +64,15 @@ sistema. Como não há envio de e-mail configurado neste ambiente self-hosted,
 o Administrador define a senha inicial na hora e informa a pessoa por fora
 (chat, telefone) — ela pode trocar a senha depois de logar.
 
+### Importar a planilha existente
+
+Com o stack no ar e um usuário admin/editor criado, `scripts/import_planilha.py`
+lê a planilha oficial e grava tudo pela API nova (áreas, não conformidades,
+documentos) -- ver o cabeçalho do próprio arquivo para variáveis de ambiente
+e uso. Recusa rodar se já houver áreas cadastradas, a menos que `--force`
+seja passado conscientemente (não há upsert -- rodar duas vezes duplica
+dados).
+
 ### Evoluindo o schema depois
 
 Migrations novas vão em `api/migrations/` (SQL puro, com `-- Up Migration` e
@@ -73,13 +82,25 @@ contra um banco já no ar:
 docker compose run --rm migrate
 ```
 
+## Testes
+
+Cada camada tem sua própria suíte, isolada das outras (nenhuma delas precisa
+de Postgres ou Docker rodando):
+
+```bash
+# API (Node/Express) -- mocka o banco, roda em milissegundos
+cd api && npm test
+
+# Frontend (lógica pura extraída pra web/js/) -- na raiz do repo
+npm test
+
+# Scripts Python (extract_data.py, build_dashboard.py, scripts/import_planilha.py)
+pip install -r requirements-dev.txt
+pytest
+```
+
 ## O que ainda não foi implementado
 
-- **Importador da planilha para o Postgres**: não existe mais nenhum script
-  pronto para isso (o antigo `scripts/migrate_to_supabase.py` falava com a
-  API REST do Supabase e foi removido junto com o resto daquele caminho).
-  Precisaria ser escrito do zero, batendo direto na API nova, se a
-  reimportação do Excel ainda for necessária.
 - Troca de senha pela própria pessoa tem endpoint pronto na API
   (`PATCH /api/me/password`) mas ainda não tem botão na interface.
 
