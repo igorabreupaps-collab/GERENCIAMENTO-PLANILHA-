@@ -1,11 +1,8 @@
-const express = require("express");
-const db = require("../db");
-const { authRequired } = require("../middleware/auth");
-const { requireRole } = require("../middleware/requireRole");
-const { asyncHandler } = require("../lib/asyncHandler");
-const { buildUpdate, buildInsert } = require("../lib/updateQuery");
-
-const router = express.Router();
+const { createCrudRepository } = require("../repositories/crudRepository");
+const { createCrudEntityService } = require("../services/crudEntityService");
+const { createCrudEntityController } = require("../controllers/crudEntityController");
+const { createCrudEntityRoutes } = require("./crudEntityRoutes");
+const { ValidationError } = require("../errors/AppError");
 
 const ALLOWED_FIELDS = [
   "tipo",
@@ -20,56 +17,15 @@ const ALLOWED_FIELDS = [
   "observacao",
 ];
 
-router.get(
-  "/",
-  authRequired,
-  asyncHandler(async (req, res) => {
-    const { rows } = await db.query("select * from documentos order by numero");
-    res.json(rows);
-  })
-);
-
-router.post(
-  "/",
-  authRequired,
-  requireRole("editor", "admin"),
-  asyncHandler(async (req, res) => {
-    if (!req.body.tipo || !(req.body.numero || "").trim()) {
-      return res.status(400).json({ error: "Informe tipo e número do documento." });
+const repository = createCrudRepository({ table: "documentos", allowedFields: ALLOWED_FIELDS, orderBy: "numero" });
+const service = createCrudEntityService(repository, {
+  notFoundMessage: "Documento não encontrado.",
+  validateCreate(data) {
+    if (!data.tipo || !(data.numero || "").trim()) {
+      throw new ValidationError("Informe tipo e número do documento.");
     }
-    const insert = buildInsert("documentos", ALLOWED_FIELDS, req.body, {}, req.user.id);
-    const { rows } = await db.query(insert.sql, insert.values);
-    res.status(201).json(rows[0]);
-  })
-);
+  },
+});
+const controller = createCrudEntityController(service);
 
-router.patch(
-  "/:id",
-  authRequired,
-  requireRole("editor", "admin"),
-  asyncHandler(async (req, res) => {
-    const id = parseInt(req.params.id, 10);
-    const update = buildUpdate("documentos", ALLOWED_FIELDS, req.body, id, req.user.id);
-    if (!update) {
-      return res.status(400).json({ error: "Nenhum campo válido para atualizar." });
-    }
-    const { rows } = await db.query(update.sql, update.values);
-    if (!rows.length) {
-      return res.status(404).json({ error: "Documento não encontrado." });
-    }
-    res.json(rows[0]);
-  })
-);
-
-router.delete(
-  "/:id",
-  authRequired,
-  requireRole("editor", "admin"),
-  asyncHandler(async (req, res) => {
-    const id = parseInt(req.params.id, 10);
-    await db.query("delete from documentos where id = $1", [id]);
-    res.status(204).end();
-  })
-);
-
-module.exports = router;
+module.exports = createCrudEntityRoutes(controller);
