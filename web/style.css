@@ -347,6 +347,7 @@ table.editor-table input:disabled, table.editor-table select:disabled { backgrou
   gap: 18px; padding: 20px;
   background: radial-gradient(ellipse 90% 70% at 50% 30%, #eef4ff 0%, #8fb3ef 45%, #3f66d6 100%);
 }
+.login-wrap[hidden] { display: none; }
 .login-footer { font-size: 11.5px; color: rgba(255,255,255,0.85); text-align: center; }
 .login-card {
   width: 100%; max-width: 360px; background: var(--surface); border: 1px solid var(--border);

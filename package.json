@@ -1,0 +1,11 @@
+{
+  "name": "painel-spda-frontend-tests",
+  "private": true,
+  "description": "Testes do frontend (web/js) -- não é publicado nem servido; web/ continua HTML/CSS/JS puro, sem build step.",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2"
+  }
+}
